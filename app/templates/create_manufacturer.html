@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="POST" action="{{ url_for('main.create_manufacturer') }}">
+    {{ form.csrf_token }}
+    <fieldset>
+        <legend>Enter a Shoe</legend>
+
+        {{ form.name.label }}
+        {{ form.name }}
+        <ul>
+            {% for error in form.name.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+            </ul>
+
+
+            {{ form.country.label }}
+            {{ form.country }}
+            <ul>
+            {% for error in form.country.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+            </ul>
+
+
+            {{ form.submit }}
+    </fieldset>
+</form>
+
+
+{% endblock %}

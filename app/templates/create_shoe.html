@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="POST" action="{{ url_for('main.create_shoe') }}">
+    {{ form.csrf_token }}
+    <fieldset>
+        <legend>Enter a Shoe</legend>
+
+        {{ form.name.label }}
+        {{ form.name }}
+        <ul>
+        {% for error in form.name.errors %}
+        <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+
+        {{ form.year.label }}
+        {{ form.year }}
+        <ul>
+        {% for error in form.year.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+
+        {{ form.size.label }}
+        {{ form.size }}
+        <ul>
+        {% for error in form.size.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        {{ form.manufacturer.label }}
+        {{ form.manufacturer }}
+        <ul>
+        {% for error in form.manufacturer.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+
+        {{ form.category.label }}
+        {{ form.category }}
+        <ul>
+        {% for error in form.category.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+
+        {{ form.submit }}
+    </fieldset>
+    </form>
+
+    {% endblock %}

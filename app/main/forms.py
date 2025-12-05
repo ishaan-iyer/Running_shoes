@@ -3,7 +3,7 @@ from wtforms import (
     StringField, PasswordField, IntegerField, FloatField,
     SelectField, SubmitField
 )
-from wtforms.validators import QuerySelectField
+from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, NumberRange, Email, ValidationError
 
 from app.models import ShoeCategory, Shoe, Manufacturer, User
@@ -48,4 +48,3 @@ class ManufacturerForm(FlaskForm):
         validators=[Length(max=80)]
     )
     submit = SubmitField('Submit')
-    

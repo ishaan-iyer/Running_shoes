@@ -1,0 +1,37 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<h1>Running Shoes App</h1>
+
+<a href="{{ url_for('auth.signup') }}">Signup</a>
+
+<p>
+    <a href="{{ url_for('main.create_shoe') }}">Create a New Shoe</a> |
+    <a href="{{ url_for('main.create_manufacturer') }}">Create a New Manufacturer</a>
+</p>
+
+<h2>All Shoes</h2>
+    <ul>
+    {% for shoe in all_shoes %}
+        <li>
+            {{ shoe.name }}
+            {{ shoe.model_year }}
+            {{ shoe.manufacturer.name }}
+            {{ shoe.category.value }}
+            Size {{ shoe.size }}
+        </li>
+    {% endfor %}
+    </ul>
+
+<h2>All Manufacturers</h2>
+    <ul>
+    {% for manufacturer in all_manufacturers %}
+        <li>
+            {{ manufacturer.name }}
+            {{ manufacturer.country }}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
