@@ -1,6 +1,6 @@
 """Import packages and modules."""
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.models import Shoe, Manufacturer, User
 from app.main.forms import ShoeForm, ManufacturerForm
 
@@ -77,3 +77,52 @@ def create_manufacturer():
 
     # if form was not valid, or was not submitted yet
     return render_template('create_manufacturer.html', form=form)
+
+@main.route('/shoe/<shoe_id>', methods=['GET', 'POST'])
+def shoe_detail(shoe_id):
+    shoe = Shoe.query.get(shoe_id)
+    form = ShoeForm(obj=shoe)
+
+    # if form was submitted and contained no errors
+    if form.validate_on_submit():
+        shoe.name = form.name.data
+        shoe.model_year = form.year.data
+        shoe.size = form.size.data
+        shoe.category = form.category.data
+        shoe.manufacturer = form.manufacturer.data   # or form.manufacturer_id.data depending on your form
+
+        db.session.commit()
+
+        flash('Shoe was updated successfully.')
+        return redirect(url_for('main.shoe_detail', shoe_id=shoe_id))
+    
+    return render_template('shoe_detail.html', shoe=shoe, form=form)
+
+
+@main.route('/favorite_shoe/<shoe_id>', methods=['POST'])
+@login_required
+def favorite_shoe(shoe_id):
+    shoe = Shoe.query.get(shoe_id)
+    if shoe in current_user.favorite_shoes:
+        flash('Shoe already in favorites.')
+    else:
+        current_user.favorite_shoes.append(shoe)
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Shoe added to favorites.')
+    return redirect(url_for('main.shoe_detail', shoe_id=shoe_id))
+
+
+
+@main.route('/unfavorite_shoe/<shoe_id>', methods=['POST'])
+@login_required
+def unfavorite_shoe(shoe_id):
+    shoe = Shoe.query.get(shoe_id)
+    if shoe not in current_user.favorite_shoes:
+        flash('Shoe not in favorites.')
+    else:
+        current_user.favorite_shoes.remove(shoe)
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Shoe removed from favorites.')
+    return redirect(url_for('main.shoe_detail', shoe_id=shoe_id))

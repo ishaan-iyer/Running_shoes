@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ shoe.name }}</h1>
+
+
+{% if current_user.is_authenticated %}
+    {% if shoe not in current_user.favorite_shoes %}
+    <form action="/favorite_shoe/{{ shoe.id }}" method="POST">
+        <input type="submit" value="Favorite This Shoe">
+    </form>
+    {% else %}
+    <form action="/unfavorite_shoe/{{ shoe.id }}" method="POST">
+        <input type="submit" value="Unfavorite This Shoe">
+    </form>
+    {% endif %}
+{% endif %}
+
+
+<p>
+    <strong>Manufacturer Country</strong>: {{ shoe.manufacturer.country }}
+</p>
+{% endif %}
+
+{% if shoe.model_year %}
+<p>
+    <strong>Model Year</strong>: {{ shoe.model_year }}
+</p>
+{% endif %}
+
+{% if shoe.size %}
+<p>
+    <strong>Size</strong>: {{ shoe.size }}
+</p>
+{% endif %}
+
+<p>
+    <strong>Category</strong>: {{ shoe.category.name if shoe.category else '' }}
+</p>
+
+
+<form method="POST" action="{{ url_for('main.shoe_detail', shoe_id=shoe_id) }}">
+    {{ form.csrf_token }}
+    <fieldset>
+        <legend>Edit this shoe</legend>
+
+
+        {{ form.name.label }}
+        {{ form.name }}
+
+        {{ form.model_year.label }}
+        {{ form.model_year }}
+
+        {{ form.size.label }}
+        {{ form.size }}
+
+        {{ form.category.label }}
+        {{ form.category }}
+
+        {# Depending on your form, this might be form.manufacturer or form.manufacturer_id #}
+        {{ form.manufacturer.label }}
+        {{ form.manufacturer }}
+        
+
+        {{ form.submit }}
+    </fieldset>
+</form>
+
+{% endblock %}
