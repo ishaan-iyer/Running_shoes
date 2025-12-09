@@ -4,7 +4,16 @@
 
 <h1>Running Shoes App</h1>
 
+{% if current_user.is_authenticated == False %}
+
 <a href="{{ url_for('auth.signup') }}">Signup</a>
+<a href="{{ url_for('auth.login') }}">Log In</a>
+
+{% else %}
+
+<a href="{{ url_for('auth.logout') }}">Logout</a>
+
+{% endif %}
 
 <p>
     <a href="{{ url_for('main.create_shoe') }}">Create a New Shoe</a> |
