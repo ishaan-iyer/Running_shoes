@@ -5,17 +5,9 @@ from app.models import Shoe, Manufacturer, User
 from app.main.forms import ShoeForm, ManufacturerForm
 
 
-# Import app and db from app package so that we can run app
 from app.extensions import app, db
 
 main = Blueprint("main", __name__)
-
-
-############################
-#        Routes            #
-##############3#############
-
-
 
 
 @main.route('/')
@@ -48,10 +40,8 @@ def create_shoe():
         db.session.commit()
 
         flash('New shoe was created successfully.')
-        # You can change this to a shoe_detail route if you add one
         return redirect(url_for('main.homepage'))
     
-    # if form was not valid, or was not submitted yet
     return render_template('create_shoe.html', form=form)
 
 
@@ -75,7 +65,6 @@ def create_manufacturer():
         return redirect(url_for('main.homepage'))
     
 
-    # if form was not valid, or was not submitted yet
     return render_template('create_manufacturer.html', form=form)
 
 @main.route('/shoe/<shoe_id>', methods=['GET', 'POST'])
@@ -83,13 +72,12 @@ def shoe_detail(shoe_id):
     shoe = Shoe.query.get(shoe_id)
     form = ShoeForm(obj=shoe)
 
-    # if form was submitted and contained no errors
     if form.validate_on_submit():
         shoe.name = form.name.data
         shoe.model_year = form.year.data
         shoe.size = form.size.data
         shoe.category = form.category.data
-        shoe.manufacturer = form.manufacturer.data   # or form.manufacturer_id.data depending on your form
+        shoe.manufacturer = form.manufacturer.data  
 
         db.session.commit()
 

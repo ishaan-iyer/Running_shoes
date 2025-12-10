@@ -4,7 +4,6 @@
 
 <h1>{{ shoe.name }}</h1>
 
-
 {% if current_user.is_authenticated %}
     {% if shoe not in current_user.favorite_shoes %}
     <form action="/favorite_shoe/{{ shoe.id }}" method="POST">
@@ -17,40 +16,32 @@
     {% endif %}
 {% endif %}
 
-
 <p>
     <strong>Manufacturer Country</strong>: {{ shoe.manufacturer.country }}
 </p>
-{% endif %}
 
-{% if shoe.model_year %}
 <p>
     <strong>Model Year</strong>: {{ shoe.model_year }}
 </p>
-{% endif %}
 
-{% if shoe.size %}
 <p>
     <strong>Size</strong>: {{ shoe.size }}
 </p>
-{% endif %}
 
 <p>
-    <strong>Category</strong>: {{ shoe.category.name if shoe.category else '' }}
+    <strong>Category</strong>: {{ shoe.category.name }}
 </p>
 
-
-<form method="POST" action="{{ url_for('main.shoe_detail', shoe_id=shoe_id) }}">
-    {{ form.csrf_token }}
+<form method="POST" action="{{ url_for('main.shoe_detail', shoe_id=shoe.id) }}">
+    {{ form.hidden_tag() }}
     <fieldset>
         <legend>Edit this shoe</legend>
-
 
         {{ form.name.label }}
         {{ form.name }}
 
-        {{ form.model_year.label }}
-        {{ form.model_year }}
+        {{ form.year.label }}
+        {{ form.year }}
 
         {{ form.size.label }}
         {{ form.size }}
@@ -58,10 +49,8 @@
         {{ form.category.label }}
         {{ form.category }}
 
-        {# Depending on your form, this might be form.manufacturer or form.manufacturer_id #}
         {{ form.manufacturer.label }}
         {{ form.manufacturer }}
-        
 
         {{ form.submit }}
     </fieldset>

@@ -24,11 +24,7 @@
     <ul>
     {% for shoe in all_shoes %}
         <li>
-            {{ shoe.name }}
-            {{ shoe.model_year }}
-            {{ shoe.manufacturer.name }}
-            {{ shoe.category.value }}
-            Size {{ shoe.size }}
+            <a href="{{ url_for('main.shoe_detail', shoe_id=shoe.id) }}">{{ shoe.name }}</a>
         </li>
     {% endfor %}
     </ul>
